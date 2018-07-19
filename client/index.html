@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8" />
+
+    <title>Picture Drag and Drop</title>
+    <style>
+        /* This helps the ng-show/ng-hide animations start at the right place. */
+
+        /* Since Angular has this but needs to load, this gives us the class early. */
+
+        .ng-hide {
+            display: none!important;
+        }
+    </style>
+
+    <link href="css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/toastr.min.css">
+
+</head>
+
+<body ng-controller="listController as vm">
+    <div class="container">
+        <div class="listContainer row">
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="clearfix">                            
+                            <form name="form" class="form-inline" ng-submit="vm.submit(vm.list)">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="VIN" id="vin" ng-disabled="vm.list.length > 0" required ng-model=vm.vin>                                                                                                    
+                                </div>  
+                                <button class="btn btn-submit pull-right" ng-disabled="vm.list.length === 0" >Submit</button>                               
+                            </form>                          
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <ul dnd-list="vm.list" tt-dropit="dropit(picData)" id="picList" ondragenter="return false" ondragover="return false">
+                            <li ng-repeat="item in vm.list" dnd-draggable="item" dnd-moved="vm.list.splice($index, 1)" dnd-effect-allowed="move" dnd-selected="vm.selected = item"
+                                ng-class="{'selected': vm.selected === item}" ng-cloak>
+                                {{item.name}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+            <div class="listContainer row">
+                <div class="col-md-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3>Picture data called on submit</h3>
+                        </div>
+                        <div class="panel-body">                             
+                            <ul dnd-list="vm.getlist" >
+                                <li ng-repeat="item in vm.getlist" ng-cloak>
+                                    {{item.name}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/angular-drag-and-drop-lists.min.js"></script>
+    <script src="scripts/toastr.min.js"></script>
+
+
+    <script src="app.js"></script>
+    <script src="app.logger.js"></script>
+
+    <script src="listController.js"></script>
+
+    <script src="services/directives.js"></script>
+    <script src="services/imageReader.js"></script>
+    <script src="services/pictureService.js"></script>
+</body>
+
+</html>
